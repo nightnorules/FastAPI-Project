@@ -11,7 +11,6 @@ from backend.app.core.config import settings
 from backend.app.database.base import Base
 from backend.app.models import Category, Product, User
 
-DB_INIT_LOCK_ID = 20260418
 
 engine = create_async_engine(
     settings.async_database_url,
@@ -34,17 +33,7 @@ async def init_db():
         return
 
     async with engine.begin() as conn:
-        await conn.execute(
-            text("SELECT pg_advisory_lock(:lock_id)"),
-            {"lock_id": DB_INIT_LOCK_ID},
-        )
-        try:
-            await conn.run_sync(Base.metadata.create_all)
-        finally:
-            await conn.execute(
-                text("SELECT pg_advisory_unlock(:lock_id)"),
-                {"lock_id": DB_INIT_LOCK_ID},
-            )
+        await conn.run_sync(Base.metadata.create_all)
 
 
 async def close_db():

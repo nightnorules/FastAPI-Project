@@ -8,8 +8,6 @@ logger = logging.getLogger(__name__)
 
 
 class RedisCache:
-    """Simple Redis cache wrapper"""
-    
     def __init__(self, url: str = None):
         try:
             self.redis_client = redis.from_url(
@@ -56,7 +54,6 @@ class RedisCache:
             return False
     
     def delete(self, key: str) -> bool:
-        """Delete key from cache"""
         if not self.is_connected:
             return False
         
