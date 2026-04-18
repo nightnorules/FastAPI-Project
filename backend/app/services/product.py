@@ -23,14 +23,14 @@ class ProductService:
         if cached:
             logger.info(f"Cache hit for product {product_id}")
             return ProductResponse(**cached)
-        
+
         product = await self.repository.get_by_id(product_id)
         if not product:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Product with id {product_id} not found"
+                detail=f"Product with id {product_id} not found",
             )
-        
+
         response = ProductResponse.model_validate(product)
         self.cache.set(cache_key, response.model_dump(), ttl=600)
         return response
@@ -44,7 +44,7 @@ class ProductService:
         if not category:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Category with id {category_id} not found"
+                detail=f"Category with id {category_id} not found",
             )
 
         products = await self.repository.get_by_category(category_id)
@@ -55,7 +55,7 @@ class ProductService:
         if not category:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Category with id {product_data.category_id} not found"
+                detail=f"Category with id {product_data.category_id} not found",
             )
 
         try:
@@ -66,17 +66,20 @@ class ProductService:
         except IntegrityError as e:
             logger.error(f"Error creating product: {e}")
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Invalid product data"
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid product data"
             )
 
-    async def update_product(self, product_id: int, product_data: ProductUpdate) -> ProductResponse:
+    async def update_product(
+        self, product_id: int, product_data: ProductUpdate
+    ) -> ProductResponse:
         if product_data.category_id:
-            category = await self.category_repository.get_by_id(product_data.category_id)
+            category = await self.category_repository.get_by_id(
+                product_data.category_id
+            )
             if not category:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
-                    detail=f"Category with id {product_data.category_id} not found"
+                    detail=f"Category with id {product_data.category_id} not found",
                 )
 
         try:
@@ -84,7 +87,7 @@ class ProductService:
             if not product:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
-                    detail=f"Product with id {product_id} not found"
+                    detail=f"Product with id {product_id} not found",
                 )
             response = ProductResponse.model_validate(product)
             self.cache.delete(f"product:{product_id}")
@@ -92,8 +95,7 @@ class ProductService:
         except IntegrityError as e:
             logger.error(f"Error updating product: {e}")
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Invalid product data"
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid product data"
             )
 
     async def delete_product(self, product_id: int) -> dict:
@@ -101,7 +103,7 @@ class ProductService:
         if not success:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Product with id {product_id} not found"
+                detail=f"Product with id {product_id} not found",
             )
         self.cache.delete(f"product:{product_id}")
         return {"message": f"Product {product_id} deleted successfully"}
@@ -113,5 +115,7 @@ class ProductService:
         min_price: float | None = None,
         max_price: float | None = None,
     ) -> List[ProductResponse]:
-        products = await self.repository.get_filtered(search, category_id, min_price, max_price)
+        products = await self.repository.get_filtered(
+            search, category_id, min_price, max_price
+        )
         return [ProductResponse.model_validate(product) for product in products]

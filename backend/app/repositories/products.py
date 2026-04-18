@@ -65,7 +65,9 @@ class ProductRepository:
             logger.error(f"Error creating product: {e}")
             raise
 
-    async def update(self, product_id: int, product_data: ProductUpdate) -> Product | None:
+    async def update(
+        self, product_id: int, product_data: ProductUpdate
+    ) -> Product | None:
         db_product = await self.get_by_id(product_id)
         if not db_product:
             return None

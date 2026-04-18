@@ -31,7 +31,6 @@ class UserResponse(UserBase):
     model_config = ConfigDict(from_attributes=True)
 
 
-
 class LoginRequest(BaseModel):
     email: str = Field(description="User email")
     password: str = Field(min_length=8, description="User password")

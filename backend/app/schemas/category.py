@@ -3,7 +3,9 @@ from pydantic import BaseModel, ConfigDict, Field
 
 class CategoryBase(BaseModel):
     name: str = Field(min_length=5, max_length=100, description="Category name")
-    slug: str = Field(min_length=5, max_length=100, description="URL-friendly category name")
+    slug: str = Field(
+        min_length=5, max_length=100, description="URL-friendly category name"
+    )
 
 
 class CategoryCreate(CategoryBase):
@@ -11,8 +13,12 @@ class CategoryCreate(CategoryBase):
 
 
 class CategoryUpdate(BaseModel):
-    name: str | None = Field(None, min_length=5, max_length=100, description="Category name")
-    slug: str | None = Field(None, min_length=5, max_length=100, description="URL-friendly category name")
+    name: str | None = Field(
+        None, min_length=5, max_length=100, description="Category name"
+    )
+    slug: str | None = Field(
+        None, min_length=5, max_length=100, description="URL-friendly category name"
+    )
 
 
 class CategoryResponse(CategoryBase):

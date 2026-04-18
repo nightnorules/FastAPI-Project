@@ -1,7 +1,11 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 from backend.app.repositories.category import CategoryRepository
-from backend.app.schemas.category import CategoryResponse, CategoryCreate, CategoryUpdate
+from backend.app.schemas.category import (
+    CategoryResponse,
+    CategoryCreate,
+    CategoryUpdate,
+)
 from fastapi import HTTPException, status
 from sqlalchemy.exc import IntegrityError
 import logging
@@ -22,7 +26,7 @@ class CategoryService:
         if not category:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Category with id {category_id} not found"
+                detail=f"Category with id {category_id} not found",
             )
         return CategoryResponse.model_validate(category)
 
@@ -31,7 +35,7 @@ class CategoryService:
         if not category:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Category with slug '{slug}' not found"
+                detail=f"Category with slug '{slug}' not found",
             )
         return CategoryResponse.model_validate(category)
 
@@ -43,23 +47,25 @@ class CategoryService:
             logger.warning(f"Duplicate slug attempted: {category_data.slug}")
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail=f"Category with slug '{category_data.slug}' already exists"
+                detail=f"Category with slug '{category_data.slug}' already exists",
             )
 
-    async def update_category(self, category_id: int, category_data: CategoryUpdate) -> CategoryResponse:
+    async def update_category(
+        self, category_id: int, category_data: CategoryUpdate
+    ) -> CategoryResponse:
         try:
             category = await self.repository.update(category_id, category_data)
             if not category:
                 raise HTTPException(
                     status_code=status.HTTP_404_NOT_FOUND,
-                    detail=f"Category with id {category_id} not found"
+                    detail=f"Category with id {category_id} not found",
                 )
             return CategoryResponse.model_validate(category)
         except IntegrityError:
             logger.warning(f"Duplicate slug in update: {category_data.slug}")
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail=f"Category with slug '{category_data.slug}' already exists"
+                detail=f"Category with slug '{category_data.slug}' already exists",
             )
 
     async def delete_category(self, category_id: int) -> dict:
@@ -67,13 +73,13 @@ class CategoryService:
         if product_count > 0:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail=f"Category with id {category_id} cannot be deleted because it contains products"
+                detail=f"Category with id {category_id} cannot be deleted because it contains products",
             )
 
         success = await self.repository.delete(category_id)
         if not success:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Category with id {category_id} not found"
+                detail=f"Category with id {category_id} not found",
             )
         return {"message": f"Category {category_id} deleted successfully"}

@@ -24,9 +24,7 @@ class CategoryRepository:
         return result.scalar_one_or_none()
 
     async def get_by_slug(self, slug: str) -> Category | None:
-        result = await self.db.execute(
-            select(Category).where(Category.slug == slug)
-        )
+        result = await self.db.execute(select(Category).where(Category.slug == slug))
         return result.scalar_one_or_none()
 
     async def count_products(self, category_id: int) -> int:
@@ -47,7 +45,9 @@ class CategoryRepository:
             logger.error(f"Error creating category: {e}")
             raise
 
-    async def update(self, category_id: int, category_data: CategoryUpdate) -> Category | None:
+    async def update(
+        self, category_id: int, category_data: CategoryUpdate
+    ) -> Category | None:
         db_category = await self.get_by_id(category_id)
         if not db_category:
             return None

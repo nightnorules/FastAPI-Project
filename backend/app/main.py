@@ -2,7 +2,13 @@ import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
-from prometheus_client import CONTENT_TYPE_LATEST, Counter, Histogram, REGISTRY, generate_latest
+from prometheus_client import (
+    CONTENT_TYPE_LATEST,
+    Counter,
+    Histogram,
+    REGISTRY,
+    generate_latest,
+)
 import time
 
 from backend.app.api import auth, categories, products
@@ -10,22 +16,19 @@ from backend.app.database.session import init_db, close_db
 from backend.app.core.config import settings
 
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
 
 REQUEST_COUNT = Counter(
-    'fastapi_requests_total',
-    'Total HTTP requests',
-    ['method', 'endpoint', 'status_code']
+    "fastapi_requests_total",
+    "Total HTTP requests",
+    ["method", "endpoint", "status_code"],
 )
 
 REQUEST_DURATION = Histogram(
-    'fastapi_request_duration_seconds',
-    'HTTP request duration',
-    ['method', 'endpoint']
+    "fastapi_request_duration_seconds", "HTTP request duration", ["method", "endpoint"]
 )
 
 
@@ -44,7 +47,7 @@ app = FastAPI(
     title=settings.app_name,
     description="FastAPI E-Commerce Shop API with Authentication",
     version="2.0.0",
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 
@@ -64,18 +67,15 @@ async def add_process_time_header(request: Request, call_next):
     process_time = time.time() - start_time
     route = request.scope.get("route")
     endpoint = getattr(route, "path", request.url.path)
-    
+
     REQUEST_COUNT.labels(
-        method=request.method,
-        endpoint=endpoint,
-        status_code=response.status_code
+        method=request.method, endpoint=endpoint, status_code=response.status_code
     ).inc()
-    
-    REQUEST_DURATION.labels(
-        method=request.method,
-        endpoint=endpoint
-    ).observe(process_time)
-    
+
+    REQUEST_DURATION.labels(method=request.method, endpoint=endpoint).observe(
+        process_time
+    )
+
     response.headers["X-Process-Time"] = str(process_time)
     return response
 

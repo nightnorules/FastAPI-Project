@@ -16,13 +16,13 @@ celery_app.conf.update(
     enable_utc=True,
     broker_connection_retry_on_startup=True,
     task_track_started=True,
-    task_time_limit=30 * 60,  
+    task_time_limit=30 * 60,
     task_soft_time_limit=25 * 60,
     result_expires=3600,
     result_backend_transport_options={
         "master_name": "mymaster",
         "retry_on_timeout": True,
     },
-    worker_prefetch_multiplier=4, 
-    worker_max_tasks_per_child=1000,  
+    worker_prefetch_multiplier=4,
+    worker_max_tasks_per_child=1000,
 )

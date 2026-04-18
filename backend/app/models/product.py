@@ -5,6 +5,7 @@ from datetime import datetime
 from decimal import Decimal
 from sqlalchemy import ForeignKey, String, func
 
+
 class Product(Base):
     __tablename__ = "products"
 
