@@ -9,7 +9,7 @@ from backend.app.schemas.user import (
 from backend.app.services.auth import AuthService
 from backend.app.models.user import User
 from backend.app.database.session import get_db
-from backend.app.dependencies import get_current_user
+from backend.app.api.dependencies import get_current_user
 
 router = APIRouter(prefix="/api/auth", tags=["authentication"])
 
