@@ -1,10 +1,7 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file=".env", env_file_encoding="UTF-8", extra="ignore"
-    )
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="UTF-8")
 
     app_name: str = "FastAPI Shop"
     debug: str | bool = True
@@ -27,45 +24,12 @@ class Settings(BaseSettings):
     redis_url: str = "redis://localhost:6379/0"
 
     celery_broker_url: str = "redis://localhost:6379/1"
-    celery_result_backend: str = "redis://localhost:6379/1"
+    celery_result_backend: str = "redis://localhost:6379/2"
 
     smtp_server: str = "localhost"
     smtp_port: int = 587
     smtp_user: str = "noreply@shop.com"
     smtp_password: str = "your-smtp-password"
     smtp_from_email: str = "noreply@shop.com"
-
-    @property
-    def cors_origins_list(self) -> list[str]:
-        return [
-            origin.strip() for origin in self.cors_origins.split(",") if origin.strip()
-        ]
-
-    @property
-    def debug_enabled(self) -> bool:
-        if isinstance(self.debug, bool):
-            return self.debug
-
-        normalized = self.debug.strip().lower()
-        if normalized in {"1", "true", "yes", "on", "debug", "development", "dev"}:
-            return True
-        if normalized in {"0", "false", "no", "off", "release", "production", "prod"}:
-            return False
-        return False
-
-    @property
-    def async_database_url(self) -> str:
-        if self.database_url.startswith("postgresql+asyncpg://"):
-            return self.database_url
-        if self.database_url.startswith("postgresql+psycopg2://"):
-            return self.database_url.replace(
-                "postgresql+psycopg2://", "postgresql+asyncpg://", 1
-            )
-        if self.database_url.startswith("postgresql://"):
-            return self.database_url.replace(
-                "postgresql://", "postgresql+asyncpg://", 1
-            )
-        return self.database_url
-
 
 settings = Settings()
