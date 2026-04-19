@@ -8,8 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from backend.app.core.cache import get_cache
 from backend.app.repositories.category import CategoryRepository
 from backend.app.repositories.products import ProductRepository
-from backend.app.schemas.product import (ProductCreate, ProductResponse,
-                                         ProductUpdate)
+from backend.app.schemas.product import ProductCreate, ProductResponse, ProductUpdate
 
 logger = logging.getLogger(__name__)
 

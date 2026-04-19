@@ -6,8 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.repositories.category import CategoryRepository
-from backend.app.schemas.category import (CategoryCreate, CategoryResponse,
-                                          CategoryUpdate)
+from backend.app.schemas.category import CategoryCreate, CategoryResponse, CategoryUpdate
 
 logger = logging.getLogger(__name__)
 
