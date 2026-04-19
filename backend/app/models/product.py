@@ -1,9 +1,11 @@
-from sqlalchemy.orm import mapped_column, Mapped, relationship
-from sqlalchemy.types import Numeric
-from backend.app.database.base import Base
 from datetime import datetime
 from decimal import Decimal
+
 from sqlalchemy import ForeignKey, String, func
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.types import Numeric
+
+from backend.app.database.base import Base
 
 
 class Product(Base):

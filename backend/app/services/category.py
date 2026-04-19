@@ -1,14 +1,13 @@
-from sqlalchemy.ext.asyncio import AsyncSession
+import logging
 from typing import List
-from backend.app.repositories.category import CategoryRepository
-from backend.app.schemas.category import (
-    CategoryResponse,
-    CategoryCreate,
-    CategoryUpdate,
-)
+
 from fastapi import HTTPException, status
 from sqlalchemy.exc import IntegrityError
-import logging
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from backend.app.repositories.category import CategoryRepository
+from backend.app.schemas.category import (CategoryCreate, CategoryResponse,
+                                          CategoryUpdate)
 
 logger = logging.getLogger(__name__)
 

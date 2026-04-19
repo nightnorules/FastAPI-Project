@@ -1,10 +1,12 @@
-from sqlalchemy.ext.asyncio import AsyncSession
+import logging
+
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
+
 from backend.app.models.product import Product
 from backend.app.schemas.product import ProductCreate, ProductUpdate
-import logging
 
 logger = logging.getLogger(__name__)
 

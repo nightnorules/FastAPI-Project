@@ -1,10 +1,12 @@
+import logging
+
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from backend.app.database.session import get_db
-from backend.app.services.auth import AuthService
 from backend.app.models.user import User
-import logging
+from backend.app.services.auth import AuthService
 
 logger = logging.getLogger(__name__)
 

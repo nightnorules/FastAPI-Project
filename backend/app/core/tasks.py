@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime
+
 from backend.app.core.celery_app import celery_app
 
 logger = logging.getLogger(__name__)

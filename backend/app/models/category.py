@@ -1,5 +1,6 @@
 from sqlalchemy import String
-from sqlalchemy.orm import relationship, mapped_column, Mapped
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from backend.app.database.base import Base
 from backend.app.models.product import Product
 

@@ -1,19 +1,15 @@
 import logging
+import time
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
-from prometheus_client import (
-    CONTENT_TYPE_LATEST,
-    Counter,
-    Histogram,
-    REGISTRY,
-    generate_latest,
-)
-import time
+from prometheus_client import (CONTENT_TYPE_LATEST, REGISTRY, Counter,
+                               Histogram, generate_latest)
 
 from backend.app.api import auth, categories, products
-from backend.app.database.session import init_db, close_db
 from backend.app.core.config import settings
+from backend.app.database.session import close_db, init_db
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"

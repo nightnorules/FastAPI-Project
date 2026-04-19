@@ -1,14 +1,17 @@
-from passlib.context import CryptContext
-from datetime import datetime, timedelta, timezone
-from jose import JWTError, jwt
-from backend.app.core.config import settings
-from backend.app.repositories.user import UserRepository
-from backend.app.schemas.user import UserCreate, UserResponse, TokenData, LoginRequest
-from backend.app.models.user import User
-from fastapi import HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.exc import IntegrityError
 import logging
+from datetime import datetime, timedelta, timezone
+
+from fastapi import HTTPException, status
+from jose import JWTError, jwt
+from passlib.context import CryptContext
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from backend.app.core.config import settings
+from backend.app.models.user import User
+from backend.app.repositories.user import UserRepository
+from backend.app.schemas.user import (LoginRequest, TokenData, UserCreate,
+                                      UserResponse)
 
 logger = logging.getLogger(__name__)
 

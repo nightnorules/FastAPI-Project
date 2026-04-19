@@ -1,9 +1,11 @@
-from sqlalchemy.ext.asyncio import AsyncSession
+import logging
+
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from backend.app.models.user import User
 from backend.app.schemas.user import UserCreate
-import logging
 
 logger = logging.getLogger(__name__)
 

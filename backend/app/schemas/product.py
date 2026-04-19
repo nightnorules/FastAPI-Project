@@ -1,7 +1,7 @@
 from datetime import datetime
 from decimal import Decimal
 
-from pydantic import BaseModel, ConfigDict, Field, AnyHttpUrl, computed_field
+from pydantic import AnyHttpUrl, BaseModel, ConfigDict, Field, computed_field
 
 from backend.app.schemas.category import CategoryResponse
 

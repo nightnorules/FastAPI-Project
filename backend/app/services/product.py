@@ -1,12 +1,15 @@
-from sqlalchemy.ext.asyncio import AsyncSession
+import logging
 from typing import List
-from backend.app.repositories.products import ProductRepository
-from backend.app.schemas.product import ProductResponse, ProductCreate, ProductUpdate
-from backend.app.repositories.category import CategoryRepository
-from backend.app.core.cache import get_cache
+
 from fastapi import HTTPException, status
 from sqlalchemy.exc import IntegrityError
-import logging
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from backend.app.core.cache import get_cache
+from backend.app.repositories.category import CategoryRepository
+from backend.app.repositories.products import ProductRepository
+from backend.app.schemas.product import (ProductCreate, ProductResponse,
+                                         ProductUpdate)
 
 logger = logging.getLogger(__name__)
 

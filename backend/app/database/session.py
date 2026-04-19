@@ -1,16 +1,12 @@
 from typing import AsyncGenerator
 
-from sqlalchemy.ext.asyncio import (
-    create_async_engine,
-    async_sessionmaker,
-    AsyncSession,
-)
 from sqlalchemy import text
+from sqlalchemy.ext.asyncio import (AsyncSession, async_sessionmaker,
+                                    create_async_engine)
 
 from backend.app.core.config import settings
 from backend.app.database.base import Base
 from backend.app.models import Category, Product, User
-
 
 engine = create_async_engine(
     settings.async_database_url,
