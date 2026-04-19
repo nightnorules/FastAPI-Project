@@ -1,4 +1,3 @@
-import pytest
 import pytest_asyncio
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
@@ -42,17 +41,11 @@ async def db_session(async_session_local):
 
 
 @pytest_asyncio.fixture
-def override_get_db(async_session_local):
-    async def _get_db():
-        async with async_session_local() as session:
-            yield session
+async def client(db_session):
+    async def get_db_override():
+        yield db_session
 
-    return _get_db
-
-
-@pytest_asyncio.fixture
-async def client(override_get_db):
-    app.dependency_overrides[get_db] = override_get_db
+    app.dependency_overrides[get_db] = get_db_override
     async with AsyncClient(app=app, base_url="http://test") as ac:
         yield ac
     app.dependency_overrides.clear()
@@ -80,10 +73,9 @@ async def auth_token(db_session, test_user):
 @pytest_asyncio.fixture
 async def test_category(db_session):
     from backend.app.repositories.category import CategoryRepository
-
-    repo = CategoryRepository(db_session)
     from backend.app.schemas.category import CategoryCreate
 
+    repo = CategoryRepository(db_session)
     category = await repo.create(CategoryCreate(name="Test Category"))
     return category
 

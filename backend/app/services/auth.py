@@ -10,7 +10,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from backend.app.core.config import settings
 from backend.app.models.user import User
 from backend.app.repositories.user import UserRepository
-from backend.app.schemas.user import LoginRequest, TokenData, UserCreate, UserResponse
+from backend.app.schemas.user import (LoginRequest, TokenData, UserCreate,
+                                      UserResponse)
 
 logger = logging.getLogger(__name__)
 
