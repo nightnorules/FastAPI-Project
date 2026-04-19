@@ -12,7 +12,7 @@ class Product(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(100), index=True)
     description: Mapped[str | None]
-    price: Mapped[Decimal] = mapped_column(Numeric(10, 2))
+    price: Mapped[Decimal] = mapped_column(Numeric(10, 2), index=True)
     category_id: Mapped[int] = mapped_column(ForeignKey("categories.id"), index=True)
     image_url: Mapped[str | None] = mapped_column(String(500))
     created_at: Mapped[datetime] = mapped_column(server_default=func.now())

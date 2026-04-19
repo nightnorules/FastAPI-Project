@@ -1,35 +1,33 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import Field, field_validator
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="UTF-8")
 
     app_name: str = "FastAPI Shop"
-    debug: str | bool = True
-    database_url: str = "postgresql+asyncpg://shop_user:shop_password@db:5432/shop_db"
+    debug_enabled: bool = Field(default=False)
+    database_url: str = Field(..., description="Database URL")
 
-    jwt_secret_key: str = "your-secret-key-change-in-production"
+    jwt_secret_key: str = Field(..., min_length=32, description="JWT secret key")
     jwt_algorithm: str = "HS256"
     jwt_expiration_hours: int = 24
 
-    cors_origins: str = (
-        "http://localhost:5173,"
-        "http://localhost:3000,"
-        "http://127.0.0.1:5173,"
-        "http://127.0.0.1:3000"
-    )
+    cors_origins: str = "http://localhost:5173,http://localhost:3000"
 
     static_dir: str = "static"
     images_dir: str = "static/images"
 
-    redis_url: str = "redis://localhost:6379/0"
+    redis_url: str = "redis://redis:6379/0"
 
-    celery_broker_url: str = "redis://localhost:6379/1"
-    celery_result_backend: str = "redis://localhost:6379/2"
+    celery_broker_url: str = "redis://redis:6379/1"
+    celery_result_backend: str = "redis://redis:6379/2"
 
-    smtp_server: str = "localhost"
-    smtp_port: int = 587
-    smtp_user: str = "noreply@shop.com"
-    smtp_password: str = "your-smtp-password"
-    smtp_from_email: str = "noreply@shop.com"
+    @field_validator('jwt_secret_key')
+    @classmethod
+    def validate_secret_key(cls, v):
+        if "change-in-production" in v or v == "your-secret-key":
+            raise ValueError("Must set a secure secret key")
+        return v
+
 
 settings = Settings()
