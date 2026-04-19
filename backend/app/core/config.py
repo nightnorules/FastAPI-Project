@@ -23,8 +23,7 @@ class Settings(BaseSettings):
     celery_broker_url: str = "redis://redis:6379/1"
     celery_result_backend: str = "redis://redis:6379/2"
 
-    @field_validator('jwt_secret_key')
-    @classmethod
+    @field_validator("jwt_secret_key")
     def validate_secret_key(cls, v):
         if "change-in-production" in v or v == "your-secret-key":
             raise ValueError("Must set a secure secret key")
