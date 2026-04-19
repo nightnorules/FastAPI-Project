@@ -45,7 +45,7 @@ jobs:
       env:
         DATABASE_URL: postgresql://shop_user:shop_password@localhost:5432/shop_db
         DEBUG_ENABLED: false
-        JWT_SECRET_KEY: test-secret-key-for-ci-cd
+        JWT_SECRET_KEY: test-secret-key-for-ci-cd-at-least-32-chars
     
     - name: Upload coverage
       uses: codecov/codecov-action@v3

@@ -4,8 +4,13 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
-from prometheus_client import (CONTENT_TYPE_LATEST, REGISTRY, Counter,
-                               Histogram, generate_latest)
+from prometheus_client import (
+    CONTENT_TYPE_LATEST,
+    REGISTRY,
+    Counter,
+    Histogram,
+    generate_latest,
+)
 
 from backend.app.api import auth, categories, products
 from backend.app.core.config import settings
