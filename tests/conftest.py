@@ -57,7 +57,7 @@ async def test_user(db_session):
 
     auth_service = AuthService(db_session)
     user_data = UserCreate(
-        email="test@example.com", password="Test@1234", username="testuser"
+        email="test@example.com", password="Test1234", username="testuser"
     )
     user = await auth_service.register_user(user_data)
     return user
@@ -76,7 +76,9 @@ async def test_category(db_session):
     from backend.app.schemas.category import CategoryCreate
 
     repo = CategoryRepository(db_session)
-    category = await repo.create(CategoryCreate(name="Test Category"))
+    category = await repo.create(
+        CategoryCreate(name="Test Category", slug="test-category")
+    )
     return category
 
 
