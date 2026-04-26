@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from prometheus_client import (CONTENT_TYPE_LATEST, REGISTRY, Counter,
                                Histogram, generate_latest)
 
-from backend.app.api import auth, categories, products
+from backend.app.api import auth, categories, orders, products
 from backend.app.core.config import settings
 from backend.app.database.session import close_db, init_db
 
@@ -79,6 +79,7 @@ async def add_process_time_header(request: Request, call_next):
 app.include_router(auth.router)
 app.include_router(categories.router)
 app.include_router(products.router)
+app.include_router(orders.router)
 
 
 @app.get("/health", summary="Health check")

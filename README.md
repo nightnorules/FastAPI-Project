@@ -21,6 +21,7 @@ curl http://localhost:8000/health
 - **Auth**: `/api/v1/auth/register`, `/api/v1/auth/login`
 - **Categories**: `/api/v1/categories` (CRUD)
 - **Products**: `/api/v1/products` (CRUD)
+- **Orders**: `/api/v1/orders` (CRUD)
 
 ## 🔗 Сервисы
 
@@ -58,10 +59,47 @@ pytest tests/test_auth.py # Конкретный файл
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-alembic upgrade head
+# Apply migrations
+psql -h localhost -U shop_user -d shop_db < migrations/001_create_orders_table.sql
 uvicorn backend.app.main:app --reload
 ```
 
 ---
 
 **Версия**: 2.0.0
+
+## 📦 Заказы (Orders)
+
+Функциональность для управления заказами:
+
+### Endpoints
+
+```http
+POST   /api/v1/orders           # Создать заказ
+GET    /api/v1/orders           # Список заказов пользователя
+GET    /api/v1/orders/{id}      # Получить заказ
+PATCH  /api/v1/orders/{id}      # Обновить статус
+DELETE /api/v1/orders/{id}      # Отменить заказ
+```
+
+### Статусы заказа
+
+- `pending` - ожидание подтверждения
+- `confirmed` - подтвержден
+- `shipped` - отправлен
+- `delivered` - доставлен
+- `cancelled` - отменен
+
+### Пример создания заказа
+
+```bash
+curl -X POST http://localhost:8000/api/v1/orders \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "items": [
+      {"product_id": 1, "quantity": 2},
+      {"product_id": 2, "quantity": 1}
+    ]
+  }'
+```
