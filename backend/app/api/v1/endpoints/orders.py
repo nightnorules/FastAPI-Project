@@ -16,7 +16,6 @@ async def create_order(
     current_user: UserResponse = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Create a new order"""
     service = OrderService(db)
     try:
         return await service.create_order(current_user.id, order_data)
@@ -29,7 +28,6 @@ async def list_orders(
     current_user: UserResponse = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Get all orders for current user"""
     service = OrderService(db)
     return await service.get_user_orders(current_user.id)
 
@@ -40,7 +38,6 @@ async def get_order(
     current_user: UserResponse = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Get specific order"""
     service = OrderService(db)
     order = await service.get_order(order_id, current_user.id)
     if not order:
@@ -57,7 +54,6 @@ async def update_order_status(
     current_user: UserResponse = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Update order status (admin only in production)"""
     service = OrderService(db)
     order = await service.update_order_status(order_id, order_data, current_user.id)
     if not order:
@@ -73,7 +69,6 @@ async def cancel_order(
     current_user: UserResponse = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Cancel order (only pending orders)"""
     service = OrderService(db)
     if not await service.cancel_order(order_id, current_user.id):
         raise HTTPException(

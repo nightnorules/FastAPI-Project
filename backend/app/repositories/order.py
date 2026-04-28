@@ -21,16 +21,14 @@ class OrderRepository:
         return select(Order).options(
             selectinload(Order.items).selectinload(OrderItem.product)
         )
-
-    async def get_all_by_user(self, user_id: int) -> list[Order]:
-        """Get all orders for a specific user"""
+    
+    async def get_user_orders(self, user_id: int) -> list[Order]:
         result = await self.db.execute(
             self._order_query().where(Order.user_id == user_id)
         )
         return result.scalars().all()
 
     async def get_by_id(self, order_id: int, user_id: int | None = None) -> Order | None:
-        """Get order by ID, optionally filtered by user_id"""
         query = self._order_query().where(Order.id == order_id)
         if user_id:
             query = query.where(Order.user_id == user_id)
@@ -38,7 +36,6 @@ class OrderRepository:
         return result.scalar_one_or_none()
 
     async def create(self, user_id: int, order_data: OrderCreate) -> Order:
-        """Create a new order"""
         total_price = Decimal(0)
         items_data = []
 
@@ -72,7 +69,6 @@ class OrderRepository:
         return db_order
 
     async def update_status(self, order_id: int, order_data: OrderUpdate, user_id: int | None = None) -> Order | None:
-        """Update order status"""
         db_order = await self.get_by_id(order_id, user_id)
         if not db_order:
             return None
@@ -86,7 +82,6 @@ class OrderRepository:
         return db_order
 
     async def delete(self, order_id: int, user_id: int | None = None) -> bool:
-        """Delete order"""
         db_order = await self.get_by_id(order_id, user_id)
         if not db_order:
             return False
