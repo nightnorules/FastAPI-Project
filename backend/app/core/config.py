@@ -24,18 +24,8 @@ class Settings(BaseSettings):
     celery_result_backend: str = "redis://redis:6379/2"
 
     @property
-    def async_database_url(self) -> str:
-        return self.database_url.replace("postgresql://", "postgresql+asyncpg://")
-
-    @property
     def cors_origins_list(self) -> list:
         return [origin.strip() for origin in self.cors_origins.split(",")]
-
-    @field_validator("jwt_secret_key")
-    def validate_secret_key(cls, v):
-        if "change-in-production" in v or v == "your-secret-key":
-            raise ValueError("Must set a secure secret key")
-        return v
 
 
 settings = Settings()
