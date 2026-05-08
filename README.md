@@ -10,9 +10,8 @@ A production-ready, scalable e-commerce backend built with FastAPI featuring asy
 
 ## 🚀 Live Demo
 
-> 🔗 Production API: https://fastapi-project-production-f143.up.railway.app  
-> 📚 Swagger UI: https://fastapi-project-production-f143.up.railway.app/docs  
-> 📖 ReDoc: https://fastapi-project-production-f143.up.railway.app/redoc
+> 📚 Swagger UI: https://fastapi-project-production-6d36.up.railway.app/docs
+> 📖 ReDoc: https://fastapi-project-production-6d36.up.railway.app/redoc
 
 ---
 
